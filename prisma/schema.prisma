@@ -1,0 +1,29 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+enum BookingStatus {
+    Created
+    Expired
+    Confirmed
+    Cancelled
+}
+
+model Resource {
+    id       String    @id @default(uuid())
+    name     String
+    bookings Booking[]
+}
+
+model Booking {
+    id         String        @id @default(uuid())
+    status     BookingStatus
+    startTime  DateTime
+    endTime    DateTime
+    resourceId String
+    resource   Resource      @relation(fields: [resourceId], references: [id])
+}
